@@ -1,4 +1,4 @@
 .mypy_cache
 .venv
-cheshire_orca_interfaces.egg-info
+*.egg-info
 *.pyc
