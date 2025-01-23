@@ -97,7 +97,7 @@ jobs:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
     needs:
     - build
-    if: github.ref == 'refs/heads/dev'  # only publish to TestPyPI on pushes to the 'dev' branch
+    # if: github.ref == 'refs/heads/dev'  # only publish to TestPyPI on pushes to the 'dev' branch
     runs-on: ubuntu-latest
 
     environment:
