@@ -1,10 +1,14 @@
-name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
+name: Publish to TestPyPI and PyPI
 
-on: push
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build distribution 📦
+    name: Build distribution
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +35,8 @@ jobs:
 
   publish-to-pypi:
     name: >-
-      Publish Python 🐍 distribution 📦 to PyPI
-    if: startsWith(github.ref, 'refs/tags/v')  # only publish to PyPI on tag pushes starting with 'v'
+      Publish to PyPI
+    if: startsWith(github.ref, 'refs/tags/v*')  # only publish to PyPI on tag pushes starting with 'v'
     needs:
     - build
     runs-on: ubuntu-latest
@@ -47,12 +51,12 @@ jobs:
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish distribution 📦 to PyPI
+    - name: Publish distribution to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
   github-release:
     name: >-
-      Sign the Python 🐍 distribution 📦 with Sigstore
+      Sign the distribution with Sigstore
       and upload them to GitHub Release
     needs:
     - publish-to-pypi
@@ -94,7 +98,7 @@ jobs:
         --repo "$GITHUB_REPOSITORY"
   
   publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
+    name: Publish to TestPyPI
     needs:
     - build
     # if: github.ref == 'refs/heads/dev'  # only publish to TestPyPI on pushes to the 'dev' branch
@@ -113,7 +117,7 @@ jobs:
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish distribution 📦 to TestPyPI
+    - name: Publish distribution to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
